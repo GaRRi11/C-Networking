@@ -2,6 +2,17 @@
 
 This process manually crafts an ARP request packet by building the ARP header and Ethernet header in user space and then injects the raw Ethernet frame directly onto the LAN, bypassing the kernel’s network stack.
 
+types:
+one used for checking dublicates, sent after dhcp provides ip. second is normal arp for finding neighbors for example router.
+
+| Field              | Uniqueness Check (DAD-like) | Neighbor Discovery          |
+| ------------------ | --------------------------- | --------------------------- |
+| Sender IP          | `0.0.0.0`                   | Real IP (e.g. 192.168.1.10) |
+| Sender MAC         | All zeros                   | Real MAC                    |
+| Target IP          | IP being tested             | Neighbor IP                 |
+| Purpose            | Detect duplicate IP         | Resolve MAC address         |
+
+
 ## 1. Create buffer which will be used to put error message in it if it occurs.
 
 char errbuf[LIBNET_ERRBUF_SIZE];
